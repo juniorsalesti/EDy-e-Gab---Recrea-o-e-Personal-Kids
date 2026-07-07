@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-navy-dark: #0B1D3A;
+  --color-navy-medium: #0E2542;
+  --color-navy-light: #16345C;
+  --color-gold: #D9A441;
+  --color-gold-hover: #C59132;
+  --color-blue-vib: #2E7DD1;
+  --color-red-vib: #D93C3C;
+  --color-pink-vib: #C23B7C;
+  --color-offwhite: #F7F8FA;
+  
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Baloo 2", sans-serif;
+
+  @keyframes blob-organic-1 {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate(40px, -60px) scale(1.15) rotate(120deg); }
+    66% { transform: translate(-30px, 30px) scale(0.9) rotate(240deg); }
+    100% { transform: translate(0, 0) scale(1) rotate(360deg); }
+  }
+  @keyframes blob-organic-2 {
+    0% { transform: translate(0, 0) scale(1.1) rotate(0deg); }
+    33% { transform: translate(-50px, 40px) scale(0.9) rotate(-120deg); }
+    66% { transform: translate(40px, -30px) scale(1.15) rotate(-240deg); }
+    100% { transform: translate(0, 0) scale(1.1) rotate(-360deg); }
+  }
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  --animate-blob-1: blob-organic-1 25s infinite ease-in-out;
+  --animate-blob-2: blob-organic-2 30s infinite ease-in-out;
+  --animate-ripple: ripple 2s infinite ease-out;
+  --animate-float-slow: float 8s infinite ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--color-navy-dark);
+  color: var(--color-offwhite);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom cursor styling (mouse standard is visible) */
+
+/* Glassmorphism utility */
+.glass-nav {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-navy-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-light);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Stagger & Fade Slide Entrance animations */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text selections */
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-navy-dark);
+}
+
