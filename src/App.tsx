@@ -53,7 +53,6 @@ interface CountUpProps {
 interface FloatingSportsBallProps {
   type: 'futebol' | 'basquete' | 'volei';
   style?: React.CSSProperties;
-  mousePos?: { x: number; y: number };
   factor?: number;
   delay?: number;
   key?: React.Key;
@@ -81,6 +80,8 @@ function OfficialLogoCrest({ className = "w-16 h-16" }) {
       alt="EDy & Gab Logo"
       className={`${className} object-contain`}
       referrerPolicy="no-referrer"
+      loading="eager"
+      fetchPriority="high"
     />
   );
 }
@@ -436,10 +437,7 @@ function CountUp({ end, duration = 1800, suffix = "" }: CountUpProps) {
 }
 
 // 6. Floating Parallax Sports Balls
-function FloatingSportsBall({ type, style = {}, mousePos = { x: 0, y: 0 }, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
-  const translateX = mousePos.x * factor;
-  const translateY = mousePos.y * factor;
-
+function FloatingSportsBall({ type, style = {}, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
   const renderSVG = () => {
     if (type === 'futebol') {
       return (
@@ -484,7 +482,7 @@ function FloatingSportsBall({ type, style = {}, mousePos = { x: 0, y: 0 }, facto
       className="hidden md:block absolute pointer-events-none transition-transform duration-300 ease-out animate-float-slow md:opacity-40"
       style={{
         ...style,
-        transform: `translate(${translateX}px, ${translateY}px)`,
+        transform: `translate(calc(var(--mouse-x, 0px) * ${factor}), calc(var(--mouse-y, 0px) * ${factor}))`,
         animationDelay: `${delay}s`,
       }}
     >
@@ -580,6 +578,8 @@ function ManifestoCarousel() {
                 alt={img.alt} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
               />
               {/* Bottom gradient overlay */}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-dark/95 via-navy-dark/40 to-transparent p-6 pt-16 text-left">
@@ -722,7 +722,6 @@ export default function App() {
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [durationTab, setDurationTab] = useState<'3h' | '4h'>('3h');
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [activeSection, setActiveSection] = useState('hero');
 
   // Set page title on mount
@@ -753,19 +752,18 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Hero parallax mouse tracker
-  const handleHeroMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    setMousePos({
-      x: clientX - centerX,
-      y: clientY - centerY
-    });
+  // Hero parallax mouse tracker using CSS custom variables to prevent full-app state re-renders
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
   };
 
-  const handleHeroMouseLeave = () => {
-    setMousePos({ x: 0, y: 0 });
+  const handleHeroMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.setProperty('--mouse-x', '0px');
+    e.currentTarget.style.setProperty('--mouse-y', '0px');
   };
 
   // Nav click smooth scrolling helper
@@ -934,10 +932,10 @@ export default function App() {
         <BubbleCanvas />
 
         {/* Floating Parallax Elements (Flat Line-Art Sports Balls) */}
-        <FloatingSportsBall type="futebol" style={{ top: '22%', left: '12%', width: '70px', height: '70px' }} mousePos={mousePos} factor={0.04} delay={0} />
-        <FloatingSportsBall type="basquete" style={{ bottom: '25%', left: '16%', width: '85px', height: '85px' }} mousePos={mousePos} factor={-0.03} delay={1.5} />
-        <FloatingSportsBall type="volei" style={{ top: '28%', right: '14%', width: '75px', height: '75px' }} mousePos={mousePos} factor={0.05} delay={3} />
-        <FloatingSportsBall type="futebol" style={{ bottom: '20%', right: '18%', width: '90px', height: '90px' }} mousePos={mousePos} factor={-0.045} delay={4.5} />
+        <FloatingSportsBall type="futebol" style={{ top: '22%', left: '12%', width: '70px', height: '70px' }} factor={0.04} delay={0} />
+        <FloatingSportsBall type="basquete" style={{ bottom: '25%', left: '16%', width: '85px', height: '85px' }} factor={-0.03} delay={1.5} />
+        <FloatingSportsBall type="volei" style={{ top: '28%', right: '14%', width: '75px', height: '75px' }} factor={0.05} delay={3} />
+        <FloatingSportsBall type="futebol" style={{ bottom: '20%', right: '18%', width: '90px', height: '90px' }} factor={-0.045} delay={4.5} />
 
         {/* Hero content container */}
         <div className="max-w-5xl mx-auto px-6 md:px-12 text-center relative z-10">
