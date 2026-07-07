@@ -725,6 +725,11 @@ export default function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [activeSection, setActiveSection] = useState('hero');
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "EDy & Gab — Recreação e Personal Kids";
+  }, []);
+
   // Track scroll for glassmorphism nav & active link
   useEffect(() => {
     const handleScroll = () => {
