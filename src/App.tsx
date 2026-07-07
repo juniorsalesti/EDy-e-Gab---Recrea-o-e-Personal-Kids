@@ -76,7 +76,7 @@ function WhatsAppIcon({ className = "w-5 h-5" }) {
 function OfficialLogoCrest({ className = "w-16 h-16" }) {
   return (
     <img
-      src="https://i.ibb.co/x8KRjbXq/Chat-GPT-Image-6-de-jul-de-2026-17-22-08.png"
+      src="https://images.weserv.nl/?url=https://i.ibb.co/x8KRjbXq/Chat-GPT-Image-6-de-jul-de-2026-17-22-08.png&w=400&output=webp&q=85"
       alt="EDy & Gab Logo"
       className={`${className} object-contain`}
       referrerPolicy="no-referrer"
@@ -524,12 +524,12 @@ function FloatingSportsBallInner({ type, style = {}, factor = 0.035, delay = 0 }
 // ----------------- CAROUSEL COMPONENT FOR MANIFESTO -----------------
 const CAROUSEL_IMAGES = [
   {
-    url: "https://i.ibb.co/rK8PV8j7/Whats-App-Image-2026-07-06-at-15-21-38.jpg",
+    url: "https://images.weserv.nl/?url=https://i.ibb.co/rK8PV8j7/Whats-App-Image-2026-07-06-at-15-21-38.jpg&w=800&output=webp&q=80",
     alt: "Recreação infantil ativa - Tios Edy e Gab brincando com crianças",
     caption: "Fugimos das telas: estimulamos o desenvolvimento motor e criamos vínculos sociais autênticos com brincadeiras ativas e saudáveis."
   },
   {
-    url: "https://i.ibb.co/BVY297Qy/Whats-App-Image-2026-07-06-at-15-21-39.jpg",
+    url: "https://images.weserv.nl/?url=https://i.ibb.co/BVY297Qy/Whats-App-Image-2026-07-06-at-15-21-39.jpg&w=800&output=webp&q=80",
     alt: "Crianças brincando alegremente - Tios Edy e Gab",
     caption: "Profissionais qualificados de Educação Física entregando diversão inteligente, afeto e segurança integral para o seu evento."
   }
@@ -954,9 +954,9 @@ export default function App() {
         onMouseMove={handleHeroMouseMove}
         onMouseLeave={handleHeroMouseLeave}
       >
-        {/* Background Organic SVGs (Blobs Animados) */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-vib/10 rounded-full blur-[80px] animate-blob-1 pointer-events-none" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-vib/10 rounded-full blur-[110px] animate-blob-2 pointer-events-none" />
+        {/* Background Organic SVGs (Blobs Animados) - Hidden on mobile to optimize performance */}
+        <div className="hidden md:block absolute top-20 left-10 w-72 h-72 bg-blue-vib/10 rounded-full blur-[80px] animate-blob-1 pointer-events-none" />
+        <div className="hidden md:block absolute bottom-20 right-10 w-96 h-96 bg-pink-vib/10 rounded-full blur-[110px] animate-blob-2 pointer-events-none" />
         
         {/* Canvas de partículas de sabão / bubbles */}
         <BubbleCanvas />
