@@ -185,6 +185,19 @@ function CustomCursor() {
 
 // 2. Bubbles Canvas Particle Generator
 function BubbleCanvas() {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
+    setShouldRender(!isMobile);
+  }, []);
+
+  if (!shouldRender) return null;
+
+  return <BubbleCanvasInner />;
+}
+
+function BubbleCanvasInner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000, radius: 110 });
 
@@ -360,6 +373,8 @@ function TiltCard({ children, className = "", color = "rgba(217, 164, 65, 0.12)"
   const [tiltStyle, setTiltStyle] = useState({});
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
@@ -380,6 +395,8 @@ function TiltCard({ children, className = "", color = "rgba(217, 164, 65, 0.12)"
   };
 
   const handleMouseLeave = () => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    
     setTiltStyle({
       transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
       transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -437,7 +454,20 @@ function CountUp({ end, duration = 1800, suffix = "" }: CountUpProps) {
 }
 
 // 6. Floating Parallax Sports Balls
-function FloatingSportsBall({ type, style = {}, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
+function FloatingSportsBall(props: FloatingSportsBallProps) {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    setShouldRender(!isMobile);
+  }, []);
+
+  if (!shouldRender) return null;
+
+  return <FloatingSportsBallInner {...props} />;
+}
+
+function FloatingSportsBallInner({ type, style = {}, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
   const renderSVG = () => {
     if (type === 'futebol') {
       return (
