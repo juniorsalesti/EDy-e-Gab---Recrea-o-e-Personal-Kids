@@ -33,6 +33,7 @@ interface RevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  immediate?: boolean;
   key?: React.Key;
 }
 
@@ -334,19 +335,31 @@ function BubbleCanvasInner() {
 }
 
 // 3. Scroll Reveal Entrance Component
-function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+function Reveal({ children, className = "", delay = 0, immediate = false }: RevealProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check if the element is already in the viewport on mount
+    const rect = ref.current?.getBoundingClientRect();
+    const isInViewport = rect ? (rect.top >= 0 && rect.top < window.innerHeight) : false;
+
+    if (immediate || isInViewport) {
+      // Trigger immediately (with transition delay) to prevent issues with delayed or blocked animations on load
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsVisible(true);
         observer.unobserve(entry.target);
       }
     }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0.05, // Lower threshold for better mobile and overall responsiveness
+      rootMargin: '0px 0px -20px 0px'
     });
 
     if (ref.current) {
@@ -354,7 +367,7 @@ function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [immediate]);
 
   return (
     <div
@@ -971,21 +984,21 @@ export default function App() {
         <div className="max-w-5xl mx-auto px-6 md:px-12 text-center relative z-10">
           
           {/* Strong Headline */}
-          <Reveal delay={250}>
+          <Reveal delay={250} immediate={true}>
             <h1 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-offwhite tracking-tight leading-tight max-w-4xl mx-auto">
               Recreação de verdade, feita por quem <span className="text-gold">entende de criança!</span>
             </h1>
           </Reveal>
 
           {/* Sincere Subheadline referencing formation */}
-          <Reveal delay={400}>
+          <Reveal delay={400} immediate={true}>
             <p className="text-base sm:text-lg md:text-xl text-offwhite/80 max-w-2xl mx-auto mt-6 leading-relaxed">
               Diversão, esporte e socialização em Campinas e região. Atividades lúdicas conduzidas por <strong className="text-gold">Tio Edy</strong> e <strong className="text-gold">Tio Gab</strong>, professores formados em Educação Física.
             </p>
           </Reveal>
 
           {/* CTAs */}
-          <Reveal delay={550}>
+          <Reveal delay={550} immediate={true}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
               <button
                 onClick={() => scrollToId('pacotes')}
@@ -1006,7 +1019,7 @@ export default function App() {
           </Reveal>
 
           {/* Formados badge */}
-          <Reveal delay={700} className="mt-12 flex justify-center">
+          <Reveal delay={700} immediate={true} className="mt-12 flex justify-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-vib/10 border border-blue-vib/20 text-blue-vib text-xs font-bold tracking-wide uppercase">
               <ShieldCheck className="w-4 h-4" />
               100% dos Recreadores Formados em Educação Física
