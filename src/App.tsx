@@ -186,19 +186,6 @@ function CustomCursor() {
 
 // 2. Bubbles Canvas Particle Generator
 function BubbleCanvas() {
-  const [shouldRender, setShouldRender] = useState(false);
-
-  useEffect(() => {
-    const isMobile = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
-    setShouldRender(!isMobile);
-  }, []);
-
-  if (!shouldRender) return null;
-
-  return <BubbleCanvasInner />;
-}
-
-function BubbleCanvasInner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000, radius: 110 });
 
@@ -345,10 +332,11 @@ function Reveal({ children, className = "", delay = 0, immediate = false }: Reve
     const isInViewport = rect ? (rect.top >= 0 && rect.top < window.innerHeight) : false;
 
     if (immediate || isInViewport) {
-      // Trigger immediately (with transition delay) to prevent issues with delayed or blocked animations on load
+      // Trigger immediately (with transition delay) after a short delay so the browser
+      // is guaranteed to paint the initial hidden state, allowing the CSS transition to play smoothly on mobile.
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 50);
+      }, 150);
       return () => clearTimeout(timer);
     }
 
@@ -467,20 +455,26 @@ function CountUp({ end, duration = 1800, suffix = "" }: CountUpProps) {
 }
 
 // 6. Floating Parallax Sports Balls
-function FloatingSportsBall(props: FloatingSportsBallProps) {
-  const [shouldRender, setShouldRender] = useState(false);
+function FloatingSportsBall({ type, style = {}, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    setShouldRender(!isMobile);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  if (!shouldRender) return null;
+  const adjustedStyle = { ...style };
+  if (isMobile && style.width && style.height) {
+    const wVal = parseFloat(String(style.width));
+    const hVal = parseFloat(String(style.height));
+    if (!isNaN(wVal)) adjustedStyle.width = `${wVal * 0.65}px`;
+    if (!isNaN(hVal)) adjustedStyle.height = `${hVal * 0.65}px`;
+  }
 
-  return <FloatingSportsBallInner {...props} />;
-}
-
-function FloatingSportsBallInner({ type, style = {}, factor = 0.035, delay = 0 }: FloatingSportsBallProps) {
   const renderSVG = () => {
     if (type === 'futebol') {
       return (
@@ -522,9 +516,9 @@ function FloatingSportsBallInner({ type, style = {}, factor = 0.035, delay = 0 }
 
   return (
     <div
-      className="hidden md:block absolute pointer-events-none transition-transform duration-300 ease-out animate-float-slow md:opacity-40"
+      className="absolute pointer-events-none transition-transform duration-300 ease-out animate-float-slow opacity-25 md:opacity-40"
       style={{
-        ...style,
+        ...adjustedStyle,
         transform: `translate(calc(var(--mouse-x, 0px) * ${factor}), calc(var(--mouse-y, 0px) * ${factor}))`,
         animationDelay: `${delay}s`,
       }}
