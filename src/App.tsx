@@ -1061,7 +1061,7 @@ export default function App() {
                     4 Anos de Experiência
                   </div>
                   <p className="text-sm md:text-base text-offwhite/80 mt-4 leading-relaxed">
-                    Formado em Educação Física pela FEF Unicamp, unindo paixão pelo esporte ao universo infantil. Possui uma conexão genuína que faz com que as crianças se sintam seguras, ativas e integradas ao grupo desde o primeiro minuto.
+                    Formado em Educação Física pela FAEFI Puc-Campinas, unindo paixão pelo esporte ao universo infantil. Possui uma conexão genuína que faz com que as crianças se sintam seguras, ativas e integradas ao grupo desde o primeiro minuto.
                   </p>
                 </div>
                 <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-end">
@@ -1550,6 +1550,76 @@ export default function App() {
             <p className="text-xs text-offwhite/40 max-w-xl mx-auto">
               *Os valores apresentados são de referência e podem apresentar pequenas variações conforme a faixa etária exata, estrutura e distância da localização no município de Campinas/SP.
             </p>
+          </Reveal>
+
+          {/* CAMPO DO UNIFORME COMPLETO */}
+          <Reveal className="mt-16 max-w-4xl mx-auto">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-medium/80 to-navy-medium/40 border-2 border-gold/30 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 shadow-2xl">
+              
+              {/* Decorative radial glow */}
+              <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-gold/10 rounded-full blur-[60px] pointer-events-none" />
+              <div className="absolute -left-20 -top-20 w-80 h-80 bg-blue-vib/5 rounded-full blur-[60px] pointer-events-none" />
+
+              {/* Text/Content side */}
+              <div className="flex-1 space-y-4 z-10 text-left w-full">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-gold uppercase px-3 py-1 rounded-full bg-gold/10 border border-gold/20">
+                  <ShieldCheck className="w-3.5 h-3.5" /> Uniforme Oficial EDy & Gab
+                </span>
+                
+                <h3 className="font-display font-black text-2xl md:text-3xl text-offwhite tracking-tight leading-tight">
+                  Adquira o <span className="text-gold">Uniforme Completo</span> do Aluno!
+                </h3>
+                
+                <p className="text-sm md:text-base text-offwhite/80 leading-relaxed">
+                  Para os alunos participantes, oferecemos o uniforme oficial completo para que eles joguem e se divirtam com a máxima identidade, pertencimento e conforto.
+                </p>
+
+                <div className="bg-navy-dark/60 border border-white/5 rounded-2xl p-4 md:p-5 mt-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center shrink-0 border border-gold/20 text-gold">
+                      <Trophy className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-offwhite/50 uppercase tracking-wider font-bold">Condição Especial</p>
+                      <p className="text-base md:text-lg text-offwhite font-bold">
+                        Taxa de <span className="text-gold">R$ 70,00</span> na primeira parcela
+                      </p>
+                      <p className="text-xs text-offwhite/70 mt-0.5">
+                        O aluno recebe o uniforme completo (camiseta + shorts oficiais).
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex flex-wrap gap-4">
+                  <a
+                    href={getWhatsAppLink("5519987691956", "Olá Tio Edy e Tio Gab! Tenho interesse no uniforme completo para o aluno com a taxa de R$ 70,00 na primeira parcela. Como funciona?")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold hover:bg-gold-hover text-navy-dark font-black text-sm transition-all duration-300 shadow-md interactive-item"
+                  >
+                    Garantir Uniforme no WhatsApp
+                  </a>
+                </div>
+              </div>
+
+              {/* Image side */}
+              <div className="w-full md:w-1/2 max-w-[280px] md:max-w-none flex justify-center z-10">
+                <div className="relative group w-full flex justify-center">
+                  {/* Subtle pulsing background behind the image */}
+                  <div className="absolute inset-0 bg-gold/5 rounded-2xl blur-xl group-hover:bg-gold/10 transition-all duration-500" />
+                  
+                  <img
+                    src="https://images.weserv.nl/?url=https://i.ibb.co/JF0B31M4/Chat-GPT-Image-15-de-jul-de-2026-16-51-11.png&w=600&output=webp&q=85"
+                    alt="Uniforme Oficial Completo EDy & Gab"
+                    className="rounded-2xl border border-white/10 shadow-xl object-contain max-h-[280px] md:max-h-[340px] transition-transform duration-500 group-hover:scale-103"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+            </div>
           </Reveal>
 
           {/* EXTRAS (Oficinas Adicionais) */}
